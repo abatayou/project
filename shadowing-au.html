@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Shadowing - Australian english</title>
+ 
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent-color: #4db8ff;       /* ЗАМЕНИТЕ под акцент */
+      --accent-light: #e6f7ff;
+      --accent-dark:  #1aa3ff;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(to right, #e6f7ff, #f0fcff);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background-color: var(--accent-color);
+      color: white;
+      text-align: center;
+      padding: 22px 30px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .back-link {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: 600;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .back-link:hover { opacity: 1; }
+
+    header h1 {
+      font-family: "Nunito", sans-serif;
+      font-size: 2em;
+      font-weight: 800;
+    }
+
+    header .subtitle {
+      font-size: 0.95em;
+      opacity: 0.88;
+      margin-top: 6px;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    section {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 24px 28px;
+    }
+
+    section h2 {
+      font-family: "Nunito", sans-serif;
+      font-size: 1.15em;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── How-to block ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .step {
+      background: var(--accent-light);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step .step-num {
+      font-family: "Nunito", sans-serif;
+      font-size: 1.5em;
+      font-weight: 800;
+      color: var(--accent-color);
+      line-height: 1;
+    }
+
+    .step p {
+      font-size: 0.85em;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* ── Video player (shadowing.tech style) ── */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-wrapper video,
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+
+    /* Controls bar */
+    .player-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .ctrl-btn {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border: none;
+      border-radius: 22px;
+      padding: 8px 18px;
+      font-size: 0.85em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ctrl-btn:hover { background: #bee9ff; }
+    .ctrl-btn.active { background: var(--accent-color); color: white; }
+
+    .speed-label {
+      font-size: 0.82em;
+      color: #888;
+      margin-left: auto;
+    }
+
+    .speed-select {
+      border: 1.5px solid #c8e8ff;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 0.85em;
+      color: var(--accent-dark);
+      background: white;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Repeat counter */
+    .repeat-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .repeat-block span {
+      font-size: 0.83em;
+      color: #888;
+    }
+
+    .rep-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid #c8e8ff;
+      background: white;
+      font-size: 1em;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent-dark);
+      transition: background 0.15s;
+    }
+    .rep-btn:hover { background: var(--accent-light); }
+
+    #rep-count {
+      min-width: 22px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95em;
+      color: var(--accent-dark);
+    }
+
+    /* ── Transcript / phrase list ── */
+    .phrase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .phrase-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .phrase-item:hover {
+      background: var(--accent-light);
+      border-color: #bee9ff;
+    }
+
+    .phrase-item.active {
+      background: var(--accent-light);
+      border-color: var(--accent-color);
+    }
+
+    .phrase-time {
+      font-size: 0.78em;
+      color: #aaa;
+      min-width: 42px;
+      padding-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .phrase-text {
+      font-size: 0.97em;
+      line-height: 1.55;
+      color: #333;
+      flex: 1;
+    }
+
+    .phrase-item.active .phrase-text {
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    .play-icon {
+      font-size: 1.1em;
+      color: var(--accent-color);
+      opacity: 0;
+      transition: opacity 0.15s;
+      padding-top: 1px;
+    }
+
+    .phrase-item:hover .play-icon,
+    .phrase-item.active .play-icon { opacity: 1; }
+
+    /* ── Navigation ── */
+    .nav-accents {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-accent-btn {
+      flex: 1;
+      min-width: 160px;
+      padding: 14px 20px;
+      border-radius: 20px;
+      background: white;
+      border: 2px solid #d6efff;
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 0.9em;
+      text-decoration: none;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .nav-accent-btn:hover {
+      border-color: var(--accent-color);
+      background: var(--accent-light);
+    }
+
+    /* ── Button ── */
+    .button {
+      display: block;
+      width: 220px;
+      margin: 0 auto;
+      padding: 15px;
+      text-align: center;
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      box-shadow: 0 4px 12px rgba(77,184,255,0.3);
+    }
+    .button:hover { background-color: var(--accent-dark); }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.82em;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4em; }
+      .back-link { font-size: 0.8em; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="back-link">← </a>
+  <h1>Australian English</h1>
+  <p class="subtitle">Shadowing Practice</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>How to Practice Shadowing</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <p>Listen to the phrase completely without repeating</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <p>Enable repetition and speak simultaneously with the narrator</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <p>Reduce the speed if needed to clarify pronunciation</p>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <p>Repeat each phrase 3–5 times until you can produce it confidently</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Видеоплеер ── -->
+  <section>
+    <h2>🎬 Video for Shadowing</h2>
+
+      <!-- VIDEO: замените src на своё видео или используйте <iframe> для YouTube -->
+      <div class="video-wrapper">
+        <video id="shadowVideo" controls preload="metadata">
+          <source src="vid.au.1.mp4" type="video/mp4"/>
+        <!-- Для YouTube замените весь <video> на:
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID?enablejsapi=1"
+                  allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        -->
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Панель управления -->
+    <div class="player-controls">
+      <button class="ctrl-btn" id="btn-play" onclick="togglePlay()">▶ Play</button>
+      <button class="ctrl-btn" id="btn-loop" onclick="toggleLoop()">🔁 Repeat Phrase</button>
+
+      <div class="repeat-block">
+        <span>Repeats:</span>
+        <button class="rep-btn" onclick="changeRep(-1)">−</button>
+        <span id="rep-count">3</span>
+        <button class="rep-btn" onclick="changeRep(1)">+</button>
+      </div>
+
+      <span class="speed-label">Speed:</span>
+      <select class="speed-select" id="speed-select" onchange="changeSpeed(this.value)">
+        <option value="0.5">0.5×</option>
+        <option value="0.75">0.75×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.25">1.25×</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- ── Транскрипт / фразы ── -->
+  <section>
+    <h2>📝 Transcript — click on a phrase to jump to it</h2>
+    <div class="phrase-list" id="phraseList"></div>
+  </section>
+
+  <!-- ── Навигация по акцентам ── -->
+  <section>
+    <h2>🌍 Other Accents</h2>
+    <div class="nav-accents">
+      <a href="shadowing-american.html"      class="nav-accent-btn">🇺🇸 American</a>
+      <a href="shadowing-british.html"       class="nav-accent-btn">🇬🇧 British</a>
+      <a href="shadowing-southafrican.html"  class="nav-accent-btn">🇿🇦 South African</a>
+      <a href="shadowing-indian.html"        class="nav-accent-btn">🇮🇳 Indian</a>
+    </div>
+  </section>
+
+  <a href="index.html" class="button">← </a>
+</main>
+
+
+
+<script>
+  /* ══════════════════════════════════════════════════
+     ФРАЗЫ ДЛЯ ТРАНСКРИПТА
+     Формат: { time: секунды, text: "текст фразы" }
+     ЗАМЕНИТЕ на свои фразы с реальными таймкодами
+  ══════════════════════════════════════════════════ */
+  const PHRASES = [
+    { time: 0,   text: "G'day! Welcome to Australia — the land down under." },
+    { time: 0,   text: "We've got the most unique wildlife in the world, no worries." },
+    { time: 11,  text: "The word 'arvo' means afternoon — classic Aussie slang." },
+    { time: 17,  text: "She'll be right, mate. That's how we say everything's fine." },
+    { time: 23,  text: "Fancy a barbie this weekend? That's a barbecue, of course." },
+    { time: 29,  text: "The Great Barrier Reef is absolutely brilliant — a real beauty." },
+    { time: 36,  text: "In Australia, we drive on the left side of the road." },
+    { time: 42,  text: "Aussie Rules Football is massive here — footy season is everything." },
+    { time: 48,  text: "We're famous for our flat whites — best coffee in the world, reckon." },
+    { time: 55,  text: "Cheers and good on ya! That's the Aussie way to say thanks." },
+  ];
+
+  /* ══════ Player logic ══════ */
+  const video = document.getElementById('shadowVideo');
+  const list  = document.getElementById('phraseList');
+  let loopActive = false;
+  let repeatCount = 3;
+  let currentRep  = 0;
+  let loopPhrase  = null;   // { time, end }
+
+  // Build phrase list
+  PHRASES.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'phrase-item';
+    div.dataset.index = i;
+    div.innerHTML = `
+      <span class="play-icon">▶</span>
+      <span class="phrase-time">${fmtTime(p.time)}</span>
+      <span class="phrase-text">${p.text}</span>`;
+    div.addEventListener('click', () => jumpTo(i));
+    list.appendChild(div);
+  });
+
+  function fmtTime(s) {
+    const m = Math.floor(s / 60);
+    return m + ':' + String(s % 60).padStart(2,'0');
+  }
+
+  function jumpTo(index) {
+    const p = PHRASES[index];
+    video.currentTime = p.time;
+    video.play();
+    if (loopActive) {
+      const end = PHRASES[index + 1] ? PHRASES[index + 1].time : p.time + 8;
+      loopPhrase = { start: p.time, end };
+      currentRep = 0;
+    }
+    setActive(index);
+  }
+
+  // Highlight active phrase on timeupdate
+  video.addEventListener('timeupdate', () => {
+    const t = video.currentTime;
+
+    // Loop logic
+    if (loopActive && loopPhrase) {
+      if (t >= loopPhrase.end) {
+        currentRep++;
+        if (currentRep < repeatCount) {
+          video.currentTime = loopPhrase.start;
+        } else {
+          loopPhrase = null;
+          currentRep = 0;
+        }
+      }
+    }
+
+    // Active phrase highlight
+    let active = 0;
+    for (let i = 0; i < PHRASES.length; i++) {
+      if (t >= PHRASES[i].time) active = i;
+    }
+    setActive(active);
+
+    // Update play button label
+    document.getElementById('btn-play').textContent = video.paused ? '▶ Воспроизвести' : '⏸ Пауза';
+  });
+
+  function setActive(index) {
+    document.querySelectorAll('.phrase-item').forEach((el, i) => {
+      el.classList.toggle('active', i === index);
+    });
+    const el = document.querySelector(`.phrase-item[data-index="${index}"]`);
+    if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function togglePlay() {
+    video.paused ? video.play() : video.pause();
+  }
+
+  function toggleLoop() {
+    loopActive = !loopActive;
+    document.getElementById('btn-loop').classList.toggle('active', loopActive);
+    if (!loopActive) loopPhrase = null;
+  }
+
+  function changeSpeed(val) {
+    video.playbackRate = parseFloat(val);
+  }
+
+  function changeRep(delta) {
+    repeatCount = Math.max(1, Math.min(10, repeatCount + delta));
+    document.getElementById('rep-count').textContent = repeatCount;
+  }
+</script>
+</body>
+</html>

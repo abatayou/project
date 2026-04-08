@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+svg path:hover {
+    fill: rgb(0, 0, 0);
+    transition: 0.1s;
+    cursor: pointer;
+
+
+}
+h1 {
+        font-family: "Segoe UI", Arial, sans-serif;
+         margin: 0;
+      font-size: 2.5em;
+      }
+ header {
+      background-color: #4db8ff;
+      color: white;
+      text-align: center;
+      padding: 30px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
